@@ -1,7 +1,6 @@
 package org.example.Views;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -17,7 +16,23 @@ public class EditorPanel extends JPanel {
         setLayout(new BorderLayout());
 
         textArea = new RSyntaxTextArea();
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GO);
+        //textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GO);
+        try {
+            AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
+            atmf.putMapping("text/myLanguage", "org.example.MatchColors.ColorsLenguaje");
+            textArea.setSyntaxEditingStyle("text/myLanguage");
+        }catch (RuntimeException e){
+
+        }
+        SyntaxScheme ss = textArea.getSyntaxScheme();
+        ss.getStyle(Token.COMMENT_MULTILINE).foreground = Color.decode("#949494");
+        ss.getStyle(Token.COMMENT_EOL).foreground = Color.decode("#949494");
+        ss.getStyle(Token.IDENTIFIER).foreground = Color.decode("#388F38");
+        ss.getStyle(Token.DATA_TYPE).foreground = Color.decode("#CF8427");
+        ss.getStyle(Token.RESERVED_WORD).foreground = Color.decode("#8F2613");
+        ss.getStyle(Token.FUNCTION).foreground = Color.decode("#4B4BBD");
+
+
         textArea.setCodeFoldingEnabled(true);
         textArea.setAntiAliasingEnabled(true);
         textArea.setAutoIndentEnabled(true);

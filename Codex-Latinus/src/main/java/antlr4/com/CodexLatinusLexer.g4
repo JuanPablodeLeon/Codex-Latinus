@@ -14,6 +14,7 @@ TEXTUM: 'textum';
 DECIMALIS: 'decimalis';
 NUMERUS: 'numerus';
 LITTERA: 'littera';
+BOOL: 'bool';
 STRUCTURA: 'structura';
 FINIS: 'finis';
 SI: 'si';

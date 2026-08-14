@@ -33,6 +33,7 @@ tipos: NUMERUS
      | DECIMALIS
      | TEXTUM
      | LITTERA
+     | BOOL
      ;
 
    // MAIOR > ...
@@ -43,13 +44,13 @@ instruccion: imprimir
            | expresion
            ;
 
-imprimir: expresion PUNTOCOMA
+imprimir: expresion PUNTO_COMA
         ;
 
 expresion: RESTA<assoc=right> expresion
          | NON<assoc=right> expresion
          | LPAREN expresion RPAREN
-         | expresion ops1=(MULT | DIV) expresion
+         | expresion ops1=(MULTI | DIV) expresion
          | expresion ops1=(SUMA | RESTA) expresion
          | ID
          | DOUBLE
