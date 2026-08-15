@@ -3,9 +3,6 @@
     package antlr4.com;
 
 
-    package antlr4.com;
-
-
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -65,6 +62,18 @@ public class CodexLatinusGrammarBaseListener implements CodexLatinusGrammarListe
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBloque_vars(CodexLatinusGrammarParser.Bloque_varsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAsignaciones(CodexLatinusGrammarParser.AsignacionesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAsignaciones(CodexLatinusGrammarParser.AsignacionesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

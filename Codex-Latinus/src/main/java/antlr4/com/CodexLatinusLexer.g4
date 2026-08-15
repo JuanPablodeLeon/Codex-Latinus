@@ -1,9 +1,5 @@
 lexer grammar CodexLatinusLexer;
 
-@header{
-    package antlr4.com;
-}
-
 //Palanras Reservadas
 NON: 'non';
 ESTO: 'esto';
@@ -33,8 +29,8 @@ MAIOR: 'MAIOR';
 FINISUP: 'FINIS';
 
 //Funciones
-IMPR: '<<';
-LEER: '>>';
+IMPR: '>>';
+LEER: '<<';
 
 //Aritmeticas
 SUMA_INCR: '++';

@@ -2,9 +2,6 @@
 
     package antlr4.com;
 
-
-    package antlr4.com;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -52,6 +49,16 @@ public interface CodexLatinusGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBloque_vars(CodexLatinusGrammarParser.Bloque_varsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#asignaciones}.
+	 * @param ctx the parse tree
+	 */
+	void enterAsignaciones(CodexLatinusGrammarParser.AsignacionesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#asignaciones}.
+	 * @param ctx the parse tree
+	 */
+	void exitAsignaciones(CodexLatinusGrammarParser.AsignacionesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#opcion_func}.
 	 * @param ctx the parse tree

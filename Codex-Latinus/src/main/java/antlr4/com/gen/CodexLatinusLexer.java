@@ -1,7 +1,4 @@
-// Generated from /home/juanpa/Documentos/Codex-Latinus/Codex-Latinus/src/main/java/antlr4/com/CodexLatinusGrammar.g4 by ANTLR 4.13.2
-
-    package antlr4.com;
-
+// Generated from /home/juanpa/Documentos/Codex-Latinus/Codex-Latinus/src/main/java/antlr4/com/CodexLatinusLexer.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -12,7 +9,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
-public class CodexLatinusGrammarLexer extends Lexer {
+public class CodexLatinusLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -57,7 +54,7 @@ public class CodexLatinusGrammarLexer extends Lexer {
 			"'decimalis'", "'numerus'", "'littera'", "'bool'", "'structura'", "'finis'", 
 			"'si'", "'aliter'", "'dum'", "'facere'", "'perge'", "'per'", "'interrumpe'", 
 			"'actio'", "'ratio'", "'reddere'", "'VARIABILES'", "'MUNERA'", "'MAIOR'", 
-			"'FINIS'", "'<<'", "'>>'", "'++'", "'--'", "'+'", "'-'", "'*'", "'/'", 
+			"'FINIS'", "'>>'", "'<<'", "'++'", "'--'", "'+'", "'-'", "'*'", "'/'", 
 			"'=='", "'!='", "'<='", "'>='", "'<'", "'>'", "'&&'", "'||'", "':'", 
 			"';'", "','", "'.'", "'{'", "'}'", "'['", "']'", "'('", "')'", "'='"
 		};
@@ -111,13 +108,13 @@ public class CodexLatinusGrammarLexer extends Lexer {
 	}
 
 
-	public CodexLatinusGrammarLexer(CharStream input) {
+	public CodexLatinusLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "CodexLatinusGrammar.g4"; }
+	public String getGrammarFileName() { return "CodexLatinusLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -331,9 +328,9 @@ public class CodexLatinusGrammarLexer extends Lexer {
 		"\u0005R\u0000\u0000\u01252\u0001\u0000\u0000\u0000\u0126\u0127\u0005F"+
 		"\u0000\u0000\u0127\u0128\u0005I\u0000\u0000\u0128\u0129\u0005N\u0000\u0000"+
 		"\u0129\u012a\u0005I\u0000\u0000\u012a\u012b\u0005S\u0000\u0000\u012b4"+
-		"\u0001\u0000\u0000\u0000\u012c\u012d\u0005<\u0000\u0000\u012d\u012e\u0005"+
-		"<\u0000\u0000\u012e6\u0001\u0000\u0000\u0000\u012f\u0130\u0005>\u0000"+
-		"\u0000\u0130\u0131\u0005>\u0000\u0000\u01318\u0001\u0000\u0000\u0000\u0132"+
+		"\u0001\u0000\u0000\u0000\u012c\u012d\u0005>\u0000\u0000\u012d\u012e\u0005"+
+		">\u0000\u0000\u012e6\u0001\u0000\u0000\u0000\u012f\u0130\u0005<\u0000"+
+		"\u0000\u0130\u0131\u0005<\u0000\u0000\u01318\u0001\u0000\u0000\u0000\u0132"+
 		"\u0133\u0005+\u0000\u0000\u0133\u0134\u0005+\u0000\u0000\u0134:\u0001"+
 		"\u0000\u0000\u0000\u0135\u0136\u0005-\u0000\u0000\u0136\u0137\u0005-\u0000"+
 		"\u0000\u0137<\u0001\u0000\u0000\u0000\u0138\u0139\u0005+\u0000\u0000\u0139"+

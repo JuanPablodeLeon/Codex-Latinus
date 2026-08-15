@@ -2,9 +2,6 @@
 
     package antlr4.com;
 
-
-    package antlr4.com;
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -39,6 +36,12 @@ public interface CodexLatinusGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBloque_vars(CodexLatinusGrammarParser.Bloque_varsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CodexLatinusGrammarParser#asignaciones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAsignaciones(CodexLatinusGrammarParser.AsignacionesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CodexLatinusGrammarParser#opcion_func}.
 	 * @param ctx the parse tree
