@@ -1,6 +1,7 @@
 // Generated from /home/juanpa/Documentos/Codex-Latinus/Codex-Latinus/src/main/java/antlr4/com/CodexLatinusGrammar.g4 by ANTLR 4.13.2
+package antlr4.com;
 
-    package antlr4.com;
+    package antlr4;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -50,6 +51,36 @@ public interface CodexLatinusGrammarListener extends ParseTreeListener {
 	 */
 	void exitBloque_vars(CodexLatinusGrammarParser.Bloque_varsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#valores_structura_coma}.
+	 * @param ctx the parse tree
+	 */
+	void enterValores_structura_coma(CodexLatinusGrammarParser.Valores_structura_comaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#valores_structura_coma}.
+	 * @param ctx the parse tree
+	 */
+	void exitValores_structura_coma(CodexLatinusGrammarParser.Valores_structura_comaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#valores_structura_punto_coma}.
+	 * @param ctx the parse tree
+	 */
+	void enterValores_structura_punto_coma(CodexLatinusGrammarParser.Valores_structura_punto_comaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#valores_structura_punto_coma}.
+	 * @param ctx the parse tree
+	 */
+	void exitValores_structura_punto_coma(CodexLatinusGrammarParser.Valores_structura_punto_comaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#asignacion_structura}.
+	 * @param ctx the parse tree
+	 */
+	void enterAsignacion_structura(CodexLatinusGrammarParser.Asignacion_structuraContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#asignacion_structura}.
+	 * @param ctx the parse tree
+	 */
+	void exitAsignacion_structura(CodexLatinusGrammarParser.Asignacion_structuraContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#asignaciones}.
 	 * @param ctx the parse tree
 	 */
@@ -80,6 +111,16 @@ public interface CodexLatinusGrammarListener extends ParseTreeListener {
 	 */
 	void exitBloque_func(CodexLatinusGrammarParser.Bloque_funcContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#ratio_val}.
+	 * @param ctx the parse tree
+	 */
+	void enterRatio_val(CodexLatinusGrammarParser.Ratio_valContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#ratio_val}.
+	 * @param ctx the parse tree
+	 */
+	void exitRatio_val(CodexLatinusGrammarParser.Ratio_valContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#tipos}.
 	 * @param ctx the parse tree
 	 */
@@ -89,6 +130,16 @@ public interface CodexLatinusGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTipos(CodexLatinusGrammarParser.TiposContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#tipos_structura}.
+	 * @param ctx the parse tree
+	 */
+	void enterTipos_structura(CodexLatinusGrammarParser.Tipos_structuraContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#tipos_structura}.
+	 * @param ctx the parse tree
+	 */
+	void exitTipos_structura(CodexLatinusGrammarParser.Tipos_structuraContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#main}.
 	 * @param ctx the parse tree
@@ -119,6 +170,16 @@ public interface CodexLatinusGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitImprimir(CodexLatinusGrammarParser.ImprimirContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#leer_txt}.
+	 * @param ctx the parse tree
+	 */
+	void enterLeer_txt(CodexLatinusGrammarParser.Leer_txtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CodexLatinusGrammarParser#leer_txt}.
+	 * @param ctx the parse tree
+	 */
+	void exitLeer_txt(CodexLatinusGrammarParser.Leer_txtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CodexLatinusGrammarParser#expresion}.
 	 * @param ctx the parse tree

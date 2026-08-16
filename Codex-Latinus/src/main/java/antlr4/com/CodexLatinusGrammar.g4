@@ -1,14 +1,14 @@
 grammar CodexLatinusGrammar;
 
 @header{
-    package antlr4.com;
+    package antlr4;
 }
 import CodexLatinusLexer;
 
 inicio: instrucciones? EOF
       ;
 
-// 'variables' 'funciones' ... FINIS;
+           // 'variables' 'funciones' ... FINIS;
 instrucciones: opcion_val? opcion_func? main FINISUP PUNTO_COMA
              ;
 
@@ -28,13 +28,10 @@ bloque_vars: ESTO ID DOS_PUNTOS tipos expresion PUNTO_COMA
            | STRUCTURA ID LLLAVE (valores_structura_coma | valores_structura_punto_coma+) RLLAVE FINIS PUNTO_COMA
           // esto <id> : <id_structura> {...}
            | ESTO ID DOS_PUNTOS ID asignacion_structura LLLAVE RLLAVE
-           | asignaciones
-          // esto id : <valor bool> ;
+           | asignaciones // <- Aisgnarle valor a variables
+          // esto id : <valor bool> ; <- Solo valores de tipo bool
            | ESTO ID DOS_PUNTOS expresion PUNTO_COMA
-          // <id> ++
-           | ID SUMA_INCR
-          // <id> --
-           | ID RESTA_DECR
+           | ops_automaticas // <- Suma/Resta Abreviadas
            ;
 
                      // esto <id> : <tipo> , .... esto <id> : <tipo> | esto <id> : <tipo>
@@ -45,27 +42,45 @@ valores_structura_coma: ESTO ID DOS_PUNTOS tipos_structura (COMA ESTO ID DOS_PUN
 valores_structura_punto_coma: ESTO ID DOS_PUNTOS tipos_structura PUNTO_COMA
                       ;
 
-                   // <id> : <valor> , ... <id> : <valor> | <id> : <valor>
+                   // <id> : <valor> , ... , <id> : <valor> | <id> : <valor>
 asignacion_structura: ID DOS_PUNTOS expresion (COMA ID DOS_PUNTOS expresion)*
                     ;
 
            // <id> = <valor> ;
 asignaciones: ID ASIGNACION expresion PUNTO_COMA
-           // series <id> [<valor>] = <valor>;
+           // <id> [<valor>] = <valor>;
             | ID LCORCH expresion RCORCH ASIGNACION expresion PUNTO_COMA
             ;
 
+             // <id> ++
+ops_automaticas: ID SUMA_INCR
+            // <id> --
+              | ID RESTA_DECR
+              ;
           // MUNERA > ...
 opcion_func: MUNERA MAYOR bloque_func+
            ;
 
-            // actio <id> (...){...}finis;
-bloque_func: ACTIO ID LPAREN valores_structura_coma RPAREN LLLAVE RLLAVE FINIS PUNTO_COMA
-           | RATIO tipos  ID LPAREN valores_structura_coma RPAREN LLLAVE ratio_val? instruccion* RLLAVE FINIS PUNTO_COMA
+            // actio <id> (...){...} finis;
+bloque_func: ACTIO ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion* RLLAVE FINIS PUNTO_COMA
+          // ratio <tipo> <id> (...) {...} finis;
+           | RATIO tipos ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion+ RLLAVE FINIS PUNTO_COMA
            ;
 
-ratio_val: VARIABILES LCORCH bloque_vars RCORCH
+        // VARIABILES [...] ....
+funcs_val: VARIABILES LCORCH bloque_vars RCORCH
          ;
+
+         // esto <id> : <tipo> | esto <id> : <tipo> , ... , esto <id> : <tipo>
+func_param: ESTO ID DOS_PUNTOS tipos (COMA ESTO ID DOS_PUNTOS tipos)*
+          ;
+
+
+tipos_structura: tipos
+               | ID LCORCH expresion RCORCH
+               | ID
+               ;
+
 //tipos existentes
 tipos: NUMERUS
      | DECIMALIS
@@ -74,10 +89,6 @@ tipos: NUMERUS
      | BOOL
      ;
 
-tipos_structura: tipos
-               | ID LCORCH expresion RCORCH
-               | ID
-               ;
    // MAIOR > ...
 main: MAIOR MAYOR instruccion*
     ;
@@ -85,25 +96,30 @@ main: MAIOR MAYOR instruccion*
 instruccion: imprimir
            | expresion
            | leer_txt
-          // si (<exp bool>){...} finis;                            //MODIFICAR PARA ULTIMO ALITER SIN ELEMENTOS
-           | SI LPAREN expresion RPAREN LLLAVE (instruccion* | asignaciones*) RLLAVE (ALITER (LPAREN expresion RPAREN)? LLLAVE instruccion* RLLAVE)* FINIS PUNTO_COMA
+          // si (<exp bool>){...} finis;                                           // aliter( ){...} | aliter(...){...} ... aliter( ){...}
+           | SI LPAREN expresion RPAREN LLLAVE (instruccion | asignaciones)* RLLAVE (ALITER (LPAREN expresion RPAREN)? LLLAVE instruccion* RLLAVE)* FINIS PUNTO_COMA
           // dum (...) {...} finis;
            | DUM LPAREN expresion RPAREN LLLAVE instruccion+ RLLAVE FINIS PUNTO_COMA
           // facere {...} dum (...);
            | FACERE LLLAVE instruccion+ RLLAVE DUM LPAREN expresion RPAREN PUNTO_COMA
           // per(<id> ; <exp bool> ; <incremento>){...}
-           | PER LPAREN bloque_vars PUNTO_COMA expresion PUNTO_COMA bloque_vars RPAREN LLLAVE RLLAVE
+           | PER LPAREN ESTO ID DOS_PUNTOS tipos expresion PUNTO_COMA expresion PUNTO_COMA ops_automaticas RPAREN instruccion+ LLLAVE RLLAVE
+          // perge ; <- continue
            | PERGE PUNTO_COMA
+          // interrumpe ; <- break
            | INTERRUMPE PUNTO_COMA
+          // reddere ; | reddere <valor> ; <- return
            | REDDERE expresion? PUNTO_COMA
            ;
 
-
+        // >> <valor> ; | >> <valor>  ...  >> <valor> ;
 imprimir: IMPR expresion (IMPR expresion)* PUNTO_COMA
         ;
 
-leer_txt: ID? LEER PUNTO_COMA?
+      // <id> << | <<
+leer_txt: ID? LEER
         ;
+
         // -<valor>
 expresion: RESTA<assoc=right> expresion //# Umenos
         // non <valor>
@@ -122,8 +138,10 @@ expresion: RESTA<assoc=right> expresion //# Umenos
          | expresion ops1=(MENOR | MAYOR) expresion //# MenorMayor
         // <valor> (&& ||) <valor>
          | expresion ops1=(AND | OR) expresion //# AndOr
+       // <id> (...)
          | ID LPAREN (expresion (COMA expresion)* )* RPAREN
-         | ID tipos LPAREN (expresion (COMA expresion)* )* RPAREN
+        // <tipo> <id> (...)
+         | tipos ID LPAREN (expresion (COMA expresion)* )* RPAREN
          | VERUM //#VerumValor
          | FALSUS //#FalsusValor
          | ID //# Identificador
