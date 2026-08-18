@@ -5,92 +5,84 @@ grammar CodexLatinusGrammar;
 }
 import CodexLatinusLexer;
 
-inicio: instrucciones? EOF
+inicio: instrucciones? EOF //# Programa
       ;
 
            // 'variables' 'funciones' ... FINIS;
-instrucciones: opcion_val? opcion_func? main FINISUP PUNTO_COMA
+instrucciones: opcion_val? opcion_func? main FINISUP PUNTO_COMA //# Programa_Completo
              ;
 
          // VARIABILES > ...
-opcion_val: VARIABILES MAYOR bloque_vars+
+opcion_val: VARIABILES MAYOR bloque_vars+ //# Bloque_Variables
           ;
-
-          // esto <id> : <tipo> <valor>;
-bloque_vars: ESTO ID DOS_PUNTOS tipos expresion PUNTO_COMA
-          // <id> : <tipo> <valor>;
-           | ID DOS_PUNTOS tipos expresion PUNTO_COMA
-           // series <id> [<valor>] : <tipo> {...};                    <valor> , ... <valor> | <valor>
-           | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos LLLAVE expresion (COMA expresion)* RLLAVE PUNTO_COMA
-           // series <id> [<valor>] : <tipo>;
-           | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos PUNTO_COMA
-          // esto <id> : <tipo> {...} finis ;
-           | STRUCTURA ID LLLAVE (valores_structura_coma | valores_structura_punto_coma+) RLLAVE FINIS PUNTO_COMA
-          // esto <id> : <id_structura> {...}
-           | ESTO ID DOS_PUNTOS ID asignacion_structura LLLAVE RLLAVE
-           | asignaciones // <- Aisgnarle valor a variables
-          // esto id : <valor bool> ; <- Solo valores de tipo bool
-           | ESTO ID DOS_PUNTOS expresion PUNTO_COMA
-           | ops_automaticas // <- Suma/Resta Abreviadas
-           ;
-
-                     // esto <id> : <tipo> , .... esto <id> : <tipo> | esto <id> : <tipo>
-valores_structura_coma: ESTO ID DOS_PUNTOS tipos_structura (COMA ESTO ID DOS_PUNTOS tipos_structura)*
-                      ;
-
-                           // esto <id> : <tipo> ;
-valores_structura_punto_coma: ESTO ID DOS_PUNTOS tipos_structura PUNTO_COMA
-                      ;
-
-                   // <id> : <valor> , ... , <id> : <valor> | <id> : <valor>
-asignacion_structura: ID DOS_PUNTOS expresion (COMA ID DOS_PUNTOS expresion)*
-                    ;
-
-           // <id> = <valor> ;
-asignaciones: ID ASIGNACION expresion PUNTO_COMA
-           // <id> [<valor>] = <valor>;
-            | ID LCORCH expresion RCORCH ASIGNACION expresion PUNTO_COMA
-            ;
-
-             // <id> ++
-ops_automaticas: ID SUMA_INCR
-            // <id> --
-              | ID RESTA_DECR
-              ;
           // MUNERA > ...
-opcion_func: MUNERA MAYOR bloque_func+
+opcion_func: MUNERA MAYOR bloque_func+ //# Bloque_Funciones
            ;
 
             // actio <id> (...){...} finis;
-bloque_func: ACTIO ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion* RLLAVE FINIS PUNTO_COMA
+bloque_func: ACTIO ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion* RLLAVE FINIS PUNTO_COMA //# Funcion_Actio
           // ratio <tipo> <id> (...) {...} finis;
-           | RATIO tipos ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion+ RLLAVE FINIS PUNTO_COMA
+           | RATIO tipos ID LPAREN func_param? RPAREN LLLAVE funcs_val? instruccion+ RLLAVE FINIS PUNTO_COMA //# Funcion_Ratio
            ;
 
         // VARIABILES [...] ....
-funcs_val: VARIABILES LCORCH bloque_vars RCORCH
+funcs_val: VARIABILES LCORCH bloque_vars RCORCH //# Bloque_Variables_Funciones
          ;
 
+          // esto <id> : <tipo> <valor>;
+bloque_vars: ESTO ID DOS_PUNTOS tipos expresion PUNTO_COMA //# Asignacion
+           // series <id> [<valor>] : <tipo> {...};                    <valor> , ... <valor> | <valor>
+           | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos LLLAVE expresion (COMA expresion)* RLLAVE PUNTO_COMA //# Asignacion_Series
+           // series <id> [<valor>] : <tipo>;
+           | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos PUNTO_COMA //# Asignacion_Series_Vacia
+          // esto <id> : <tipo> {...} finis ;
+           | STRUCTURA ID LLLAVE (valores_structura_coma | valores_structura_punto_coma+) RLLAVE FINIS PUNTO_COMA //# Asignacion_Structura
+          // esto <id> : <id_structura> {...}
+           | ESTO ID DOS_PUNTOS ID LLLAVE asignacion_structura RLLAVE //# Asignacion_Strucutura_Variable
+           | asignaciones // <- Aisgnarle valor a variables //# Bloque_Asignaciones
+          // esto id : <valor bool> ; <- Solo valores de tipo bool
+           | ESTO ID DOS_PUNTOS expresion PUNTO_COMA //# Asignacion_Bool_Inferida
+           | ops_automaticas // <- Suma/Resta Abreviadas // # Suma_Resta_Auto
+           ;
+
+                     // esto <id> : <tipo> , .... esto <id> : <tipo> | esto <id> : <tipo>
+valores_structura_coma: ESTO ID DOS_PUNTOS tipos_structura (COMA ESTO ID DOS_PUNTOS tipos_structura)* //# Valores_Structura_Coma
+                      ;
+
+                           // esto <id> : <tipo> ;
+valores_structura_punto_coma: ESTO ID DOS_PUNTOS tipos_structura PUNTO_COMA //# Valores_Structura_Punto_Coma
+                      ;
+
+                   // <id> : <valor> , ... , <id> : <valor> | <id> : <valor>
+asignacion_structura: ID DOS_PUNTOS expresion (COMA ID DOS_PUNTOS expresion)* //# Asignacion_Variable_Structura
+                    ;
+
+             // <id> ++
+ops_automaticas: ID SUMA_INCR //# Suma_Auto
+            // <id> --
+              | ID RESTA_DECR //# Resta_Auto
+              ;
+
          // esto <id> : <tipo> | esto <id> : <tipo> , ... , esto <id> : <tipo>
-func_param: ESTO ID DOS_PUNTOS tipos (COMA ESTO ID DOS_PUNTOS tipos)*
+func_param: ESTO ID DOS_PUNTOS tipos (COMA ESTO ID DOS_PUNTOS tipos)* //# Parametros_Funciones
           ;
 
 
-tipos_structura: tipos
-               | ID LCORCH expresion RCORCH
-               | ID
+tipos_structura: tipos //# Tipos_Primitivos
+               | ID LCORCH expresion RCORCH //# TIpo_Series
+               | ID //# Identificador
                ;
 
 //tipos existentes
-tipos: NUMERUS
-     | DECIMALIS
-     | TEXTUM
-     | LITTERA
-     | BOOL
+tipos: NUMERUS //# Tipo_Numerus
+     | DECIMALIS //# Tipo_Decimalis
+     | TEXTUM //# Tipo_Textum
+     | LITTERA //# Tipo_Littera
+     | BOOL //# Tipo_Bool
      ;
 
    // MAIOR > ...
-main: MAIOR MAYOR instruccion*
+main: MAIOR MAYOR instruccion* //# Bloque_Maior
     ;
 
 instruccion: imprimir
@@ -110,7 +102,16 @@ instruccion: imprimir
            | INTERRUMPE PUNTO_COMA
           // reddere ; | reddere <valor> ; <- return
            | REDDERE expresion? PUNTO_COMA
+           | asignaciones // <- Asignar/Modificar valores de variables ya creadas //# Bloque_Asignaciones
            ;
+
+           // <id> = <valor> ;
+asignaciones: ID ASIGNACION expresion PUNTO_COMA
+           // <id> [<valor>] = <valor>;
+            | ID LCORCH expresion RCORCH ASIGNACION expresion PUNTO_COMA
+          // <id_structuta>.<elemento_structura> = <valor>;
+            | ID PUNTO expresion ASIGNACION expresion PUNTO_COMA
+            ;
 
         // >> <valor> ; | >> <valor>  ...  >> <valor> ;
 imprimir: IMPR expresion (IMPR expresion)* PUNTO_COMA
@@ -140,6 +141,10 @@ expresion: RESTA<assoc=right> expresion //# Umenos
          | expresion ops1=(AND | OR) expresion //# AndOr
        // <id> (...)
          | ID LPAREN (expresion (COMA expresion)* )* RPAREN
+       // <id>[<valor>]
+         | ID LCORCH expresion RCORCH
+       // <id_structura>.<id_propiedad>
+         | ID PUNTO ID
         // <tipo> <id> (...)
          | tipos ID LPAREN (expresion (COMA expresion)* )* RPAREN
          | VERUM //#VerumValor
