@@ -3,6 +3,9 @@ package org.example.Interpreter;
 import antlr4.com.CodexLatinusGrammarBaseVisitor;
 import antlr4.com.CodexLatinusGrammarParser;
 
+import javax.management.ObjectName;
+import java.util.List;
+
 public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
 
     private Enviroment enviroment = new Enviroment();
@@ -42,13 +45,14 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return null;
     }
 
-    @Override public T visitFuncion_Actio(CodexLatinusGrammarParser.Funcion_ActioContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitFuncion_Actio(CodexLatinusGrammarParser.Funcion_ActioContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitFuncion_Ratio(CodexLatinusGrammarParser.Funcion_RatioContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitFuncion_Ratio(CodexLatinusGrammarParser.Funcion_RatioContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitBloque_Variables_Funciones(CodexLatinusGrammarParser.Bloque_Variables_FuncionesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitBloque_Variables_Funciones(CodexLatinusGrammarParser.Bloque_Variables_FuncionesContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitAsignacion(CodexLatinusGrammarParser.AsignacionContext ctx) {
+    //Crear una nueva variable
+    @Override public Object visitAsignacion(CodexLatinusGrammarParser.AsignacionContext ctx) {
         String name = ctx.ID().getText();
         String type = (String)visit(ctx.tipos());
         Object value = valueTypes(visit(ctx.expresion()), type);
@@ -66,8 +70,32 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
     }*/
 
 
-    @Override public T visitAsignacion_Series(CodexLatinusGrammarParser.Asignacion_SeriesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Series(CodexLatinusGrammarParser.Asignacion_SeriesContext ctx) {
+        String name = ctx.ID().getText();
+        int size = Numerus(visit(ctx.expresion(0)));
+        String type = (String) visit(ctx.tipos_series());
+        Object[] serie = new Object[Math.max(size, 0)];
+        Object defaultValue = DefaultValue(type);
+        for (int i = 0; i < serie.length; i++) serie[i] = defaultValue;
 
+        List<? extends CodexLatinusGrammarParser.ExpresionContext> listaValues = ctx.expresion();
+        int sizeList = listaValues.size() - 1;
+        for (int i = 0; i < sizeList; i++) {
+            CodexLatinusGrammarParser.ExpresionContext exprValue = listaValues.get(i+1);
+            Object valorEvaluado = visit(exprValue);
+            Object valueType = valueTypes(valorEvaluado, type);
+            if (i < size){
+                serie[i] = valueType;
+            } else {
+                //error
+                break;
+            }
+        }
+        enviroment.assing(name, serie);
+        return null;
+    }
+
+    //Crear Series sin elementos dentro
     @Override public Object visitAsignacion_Series_Vacia(CodexLatinusGrammarParser.Asignacion_Series_VaciaContext ctx) {
         String name = ctx.ID().getText();
         int size = Numerus(visit(ctx.expresion()));
@@ -84,41 +112,41 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return null;
     }
 
-    @Override public T visitAsignacion_Structura(CodexLatinusGrammarParser.Asignacion_StructuraContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Structura(CodexLatinusGrammarParser.Asignacion_StructuraContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitAsignacion_Strucutura_Variable(CodexLatinusGrammarParser.Asignacion_Strucutura_VariableContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Strucutura_Variable(CodexLatinusGrammarParser.Asignacion_Strucutura_VariableContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitAsignacion_Valores_Struc_Serie(CodexLatinusGrammarParser.Asignacion_Valores_Struc_SerieContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Valores_Struc_Serie(CodexLatinusGrammarParser.Asignacion_Valores_Struc_SerieContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitBloque_Asignaciones_Vars(CodexLatinusGrammarParser.Bloque_Asignaciones_VarsContext ctx) {
         return visit(ctx.asignaciones());
     }
 
-    @Override public T visitAsignacion_Bool_Inferida(CodexLatinusGrammarParser.Asignacion_Bool_InferidaContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Bool_Inferida(CodexLatinusGrammarParser.Asignacion_Bool_InferidaContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitSuma_Resta_Auto(CodexLatinusGrammarParser.Suma_Resta_AutoContext ctx) {
         return visit(ctx.ops_automaticas());
     }
 
-    @Override public T visitIdentificador_Series(CodexLatinusGrammarParser.Identificador_SeriesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitIdentificador_Series(CodexLatinusGrammarParser.Identificador_SeriesContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitTipos_Primitivos_Series(CodexLatinusGrammarParser.Tipos_Primitivos_SeriesContext ctx) {
         return visit(ctx.tipos());
     }
 
-    @Override public T visitValores_Structura_Coma(CodexLatinusGrammarParser.Valores_Structura_ComaContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitValores_Structura_Coma(CodexLatinusGrammarParser.Valores_Structura_ComaContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitValores_Structura_Punto_Coma(CodexLatinusGrammarParser.Valores_Structura_Punto_ComaContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitValores_Structura_Punto_Coma(CodexLatinusGrammarParser.Valores_Structura_Punto_ComaContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitAsignacion_Variable_Structura(CodexLatinusGrammarParser.Asignacion_Variable_StructuraContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Variable_Structura(CodexLatinusGrammarParser.Asignacion_Variable_StructuraContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitParametros_Funciones(CodexLatinusGrammarParser.Parametros_FuncionesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitParametros_Funciones(CodexLatinusGrammarParser.Parametros_FuncionesContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitTipos_Primitivos(CodexLatinusGrammarParser.Tipos_PrimitivosContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitTipos_Primitivos(CodexLatinusGrammarParser.Tipos_PrimitivosContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitTIpo_Series(CodexLatinusGrammarParser.TIpo_SeriesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitTIpo_Series(CodexLatinusGrammarParser.TIpo_SeriesContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitIdentificador_Structura(CodexLatinusGrammarParser.Identificador_StructuraContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitIdentificador_Structura(CodexLatinusGrammarParser.Identificador_StructuraContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitTipo_Numerus(CodexLatinusGrammarParser.Tipo_NumerusContext ctx) {
         return "numerus";
@@ -140,7 +168,7 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return "bool";
     }
 
-    @Override public T visitBloque_Maior(CodexLatinusGrammarParser.Bloque_MaiorContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitBloque_Maior(CodexLatinusGrammarParser.Bloque_MaiorContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitBloque_Imprimir(CodexLatinusGrammarParser.Bloque_ImprimirContext ctx) {
         return visit(ctx.imprimir());
@@ -158,37 +186,58 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return visit(ctx.leer_txt());
     }
 
-    @Override public T visitLlamada_Actio(CodexLatinusGrammarParser.Llamada_ActioContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitLlamada_Actio(CodexLatinusGrammarParser.Llamada_ActioContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitSi_Condicional(CodexLatinusGrammarParser.Si_CondicionalContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitSi_Condicional(CodexLatinusGrammarParser.Si_CondicionalContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitDum_Ciclo(CodexLatinusGrammarParser.Dum_CicloContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitDum_Ciclo(CodexLatinusGrammarParser.Dum_CicloContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitFacere_Ciclo(CodexLatinusGrammarParser.Facere_CicloContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitFacere_Ciclo(CodexLatinusGrammarParser.Facere_CicloContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitPer_Ciclo(CodexLatinusGrammarParser.Per_CicloContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitPer_Ciclo(CodexLatinusGrammarParser.Per_CicloContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitPerge_Action(CodexLatinusGrammarParser.Perge_ActionContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitPerge_Action(CodexLatinusGrammarParser.Perge_ActionContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitInterrumpe_Action(CodexLatinusGrammarParser.Interrumpe_ActionContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitInterrumpe_Action(CodexLatinusGrammarParser.Interrumpe_ActionContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitReddere_Value(CodexLatinusGrammarParser.Reddere_ValueContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitReddere_Value(CodexLatinusGrammarParser.Reddere_ValueContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitBloque_Asignaciones(CodexLatinusGrammarParser.Bloque_AsignacionesContext ctx) {
         return visit(ctx.asignaciones());
     }
 
+    //Reasignar una el valor a una variable ya creada
     @Override public Object visitMod_Valor(CodexLatinusGrammarParser.Mod_ValorContext ctx) {
         String name = ctx.ID().getText();
         Object value = visit(ctx.expresion());
-        return visitChildren(ctx);
+        Object actualValue = enviroment.get(name);
+
+        if (compareTypes(actualValue, value) == false) return null; //para errores
+        enviroment.assing(name, value);
+        return null;
     }
 
-    @Override public T visitMod_Valor_Series(CodexLatinusGrammarParser.Mod_Valor_SeriesContext ctx) { return visitChildren(ctx); }
+    // Reasignar o agregar valor a un elemento de la serie
+    @Override public Object visitMod_Valor_Series(CodexLatinusGrammarParser.Mod_Valor_SeriesContext ctx) {
+        String name = ctx.ID().getText();
+        int rangeSeries = Numerus(visit(ctx.expresion(0)));
+        Object value = visit(ctx.expresion(1));
+        Object obj = enviroment.get(name);
+        if (obj instanceof Object[] serie){
+            if (rangeSeries >= 0 && rangeSeries < serie.length){
+                serie[rangeSeries] = value;
+            } else {
+                //error
+            }
+        } else {
+            //errir
+        }
+        return null;
+    }
 
-    @Override public T visitMod_Valor_Structura(CodexLatinusGrammarParser.Mod_Valor_StructuraContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitMod_Valor_Structura(CodexLatinusGrammarParser.Mod_Valor_StructuraContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitAsignacion_Structura_Series(CodexLatinusGrammarParser.Asignacion_Structura_SeriesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitAsignacion_Structura_Series(CodexLatinusGrammarParser.Asignacion_Structura_SeriesContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitSuma_Auto(CodexLatinusGrammarParser.Suma_AutoContext ctx) {
         String value = ctx.ID().getText();
@@ -213,7 +262,7 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return null;
     }
 
-    @Override public T visitLectura_Texto(CodexLatinusGrammarParser.Lectura_TextoContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitLectura_Texto(CodexLatinusGrammarParser.Lectura_TextoContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitParentesis(CodexLatinusGrammarParser.ParentesisContext ctx) {
         return visit(ctx.expresion());
@@ -227,7 +276,7 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return Integer.parseInt(ctx.getText());
     }
 
-    @Override public T visitLlamada_Series_Structura(CodexLatinusGrammarParser.Llamada_Series_StructuraContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitLlamada_Series_Structura(CodexLatinusGrammarParser.Llamada_Series_StructuraContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitCharVal(CodexLatinusGrammarParser.CharValContext ctx) {
         String charT = ctx.getText();
@@ -249,7 +298,7 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return -Numerus(value);
     }
 
-    @Override public T visitLlamada_Elemento_Series(CodexLatinusGrammarParser.Llamada_Elemento_SeriesContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitLlamada_Elemento_Series(CodexLatinusGrammarParser.Llamada_Elemento_SeriesContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitMultDiv(CodexLatinusGrammarParser.MultDivContext ctx) {
         Object left = visit(ctx.expresion(0));
@@ -263,7 +312,7 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
         return isDiv ? leftI / rightI : leftI * rightI;
     }
 
-    @Override public T visitLlamada_Actio_Exp(CodexLatinusGrammarParser.Llamada_Actio_ExpContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitLlamada_Actio_Exp(CodexLatinusGrammarParser.Llamada_Actio_ExpContext ctx) { return visitChildren(ctx); }
 
     @Override public Object visitIgualNoIgual(CodexLatinusGrammarParser.IgualNoIgualContext ctx) {
         double left = Decimalis(visit(ctx.expresion(0)));
@@ -386,5 +435,19 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
             return sb.append("]").toString();
         }
         return String.valueOf(value);
+    }
+
+    //Agregar series y structuras
+    private boolean compareTypes(Object prev, Object actual){
+        if ((prev instanceof Integer) && (actual instanceof Integer)) return true;
+
+        if (prev instanceof Double){
+            if (actual instanceof Double) return true;
+            if (actual instanceof Integer) return true;
+        }
+        if ((prev instanceof String) && (actual instanceof String)) return true;
+
+        if ((prev instanceof Character) && (actual instanceof Character)) return true;
+        return false;
     }
 }

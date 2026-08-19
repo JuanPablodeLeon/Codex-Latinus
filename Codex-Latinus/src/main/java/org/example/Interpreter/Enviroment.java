@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Enviroment {
     private final Map<String, Object> values = new HashMap<>();
+    private final Map<String, String> types = new HashMap<>();
     private final Enviroment padre;
 
     public Enviroment(){
@@ -26,7 +27,7 @@ public class Enviroment {
         return padre != null && padre.exist(nombre);
     }
 
-    public void assing(String nombre, Object value){
+    public void assing(String nombre, Object value/*, String type*/){
         if (values.containsKey(nombre)){
             values.put(nombre, value);
             return;

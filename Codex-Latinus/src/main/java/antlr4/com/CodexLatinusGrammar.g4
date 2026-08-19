@@ -3,7 +3,7 @@ grammar CodexLatinusGrammar;
 @header{
     package antlr4.com;
 }
-//import CodexLatinusLexer;
+import CodexLatinusLexer;
 
 inicio: instrucciones? EOF # Programa
       ;
