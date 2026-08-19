@@ -1,5 +1,6 @@
 package org.example.Views;
 
+import org.example.MatchColors.AntlrTokenMaker;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -18,6 +19,9 @@ public class EditorPanel extends JPanel {
         textArea = new RSyntaxTextArea();
         //textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GO);
         try {
+           /*AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
+            atmf.putMapping("text/mylenguaje", AntlrTokenMaker.class.getName());
+            textArea.setSyntaxEditingStyle("text/mylenguaje");*/
             AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
             atmf.putMapping("text/myLanguage", "org.example.MatchColors.ColorsLenguaje");
             textArea.setSyntaxEditingStyle("text/myLanguage");
@@ -25,13 +29,31 @@ public class EditorPanel extends JPanel {
 
         }
         SyntaxScheme ss = textArea.getSyntaxScheme();
+        //Comentarios
         ss.getStyle(Token.COMMENT_MULTILINE).foreground = Color.decode("#949494");
         ss.getStyle(Token.COMMENT_EOL).foreground = Color.decode("#949494");
-        ss.getStyle(Token.IDENTIFIER).foreground = Color.decode("#388F38");
-        ss.getStyle(Token.DATA_TYPE).foreground = Color.decode("#CF8427");
+        //
         ss.getStyle(Token.RESERVED_WORD).foreground = Color.decode("#8F2613");
+        //
+        ss.getStyle(Token.DATA_TYPE).foreground = Color.decode("#CF8427");
+        //
+        ss.getStyle(Token.LITERAL_BOOLEAN).foreground = Color.decode("#FF6347"); //Tomato
+        //
         ss.getStyle(Token.FUNCTION).foreground = Color.decode("#4B4BBD");
-
+        //
+        ss.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = Color.decode("#388F38");
+        //
+        ss.getStyle(Token.LITERAL_CHAR).foreground = Color.decode("#006400"); //Verde
+        //
+        ss.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground = Color.decode("#bc1018"); //Rojo
+        //
+        ss.getStyle(Token.LITERAL_NUMBER_FLOAT).foreground = Color.decode("#ce2b11"); //Rojo
+        //
+        ss.getStyle(Token.OPERATOR).foreground = Color.decode("#3bbcea"); // Celeste
+        //
+        ss.getStyle(Token.SEPARATOR).foreground = Color.decode("#a53bea"); //Morado
+        //
+        ss.getStyle(Token.IDENTIFIER).foreground = Color.decode("#0000FF"); //Blue
 
         textArea.setCodeFoldingEnabled(true);
         textArea.setAntiAliasingEnabled(true);

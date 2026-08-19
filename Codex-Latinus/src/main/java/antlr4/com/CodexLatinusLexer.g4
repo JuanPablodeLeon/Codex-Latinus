@@ -73,7 +73,7 @@ CHARS: '\'' [a-z-A-Z] '\'';
 ESC: '\\"' | '\\\\' ;
 
 //Comentarios
-LINE_COMMENT: '//' .*? '\r'? '\n' -> skip;
-BLOCK_COMMENT: '##' .*? '##' -> skip;
+LINE_COMMENT: '//' .*? '\r'? '\n' -> channel(HIDDEN);
+BLOCK_COMMENT: '##' .*? '##' -> channel(HIDDEN);
 
-WS: [ \t\r\n]+ -> skip;
+WS: [ \t\r\n]+ -> channel(HIDDEN);

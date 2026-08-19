@@ -1,19 +1,13 @@
-// Generated from /home/juanpa/Documentos/Codex-Latinus/Codex-Latinus/src/main/java/antlr4/com/CodexLatinusGrammar.g4 by ANTLR 4.13.2
-package antlr4.com;
-
-    package antlr4;
-
+// Generated from /home/juanpa/Documentos/Codex-Latinus/Codex-Latinus/src/main/java/antlr4/com/CodexLatinusLexer.g4 by ANTLR 4.13.2
+package antlr4.com.gen;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
-public class CodexLatinusGrammarLexer extends Lexer {
+public class CodexLatinusLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -112,13 +106,13 @@ public class CodexLatinusGrammarLexer extends Lexer {
 	}
 
 
-	public CodexLatinusGrammarLexer(CharStream input) {
+	public CodexLatinusLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "CodexLatinusGrammar.g4"; }
+	public String getGrammarFileName() { return "CodexLatinusLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -399,7 +393,7 @@ public class CodexLatinusGrammarLexer extends Lexer {
 		"\u0000\u01b1\u01af\u0001\u0000\u0000\u0000\u01b1\u01b2\u0001\u0000\u0000"+
 		"\u0000\u01b2\u01b3\u0001\u0000\u0000\u0000\u01b3\u01b4\u0006=\u0000\u0000"+
 		"\u01b4|\u0001\u0000\u0000\u0000\n\u0000\u0170\u0176\u017f\u0181\u018e"+
-		"\u0196\u019a\u01a6\u01b1\u0001\u0006\u0000\u0000";
+		"\u0196\u019a\u01a6\u01b1\u0001\u0000\u0001\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
