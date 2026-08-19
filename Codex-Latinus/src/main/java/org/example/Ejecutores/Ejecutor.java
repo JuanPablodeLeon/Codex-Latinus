@@ -28,6 +28,8 @@ public class Ejecutor {
         //errores sintacticos
 
         this.parser = parser;
+
+        tree = parser.inicio();
         //lista de errores
         //if de errores
         InterpreterVisitor interpreter = new InterpreterVisitor();
