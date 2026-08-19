@@ -1,23 +1,20 @@
 package org.example.Views;
 
+import org.example.Ejecutores.Ejecutor;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.StringReader;
 import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
 
 
 public class CodexLatinusFrame  extends JFrame {
 
     private final EditorPanel editorPanel;
     private final JTextArea consoleTextArea;
+    private Ejecutor lastEjecucion;
 
     public CodexLatinusFrame(){
         setTitle("Codex Latinus");
@@ -55,79 +52,31 @@ public class CodexLatinusFrame  extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE));
     }
 
-    private String preprocesar(String codigo) {
-        String[] lineas = codigo.split("\n", -1);
-        StringBuilder sb = new StringBuilder();
-        // Regex: línea (con espacios opcionales) que es IDENTIFICADOR seguido de ( ... ) ;
-        // No debe estar precedida de := = fmt. return var etc.
-        java.util.regex.Pattern patronLlamada = java.util.regex.Pattern.compile(
-                "^(\\s*)([a-zA-Z_][a-zA-Z0-9_]*)(\\s*\\(.*\\)\\s*;?\\s*)$"
-        );
-        for (String linea : lineas) {
-            String trimmed = linea.trim();
-            // Saltar líneas vacías, comentarios, palabras clave de control, fmt.Println, declaraciones
-           //modificar
-            if (trimmed.isEmpty() || trimmed.startsWith("//")
-                    || trimmed.startsWith("fmt.")
-                    || trimmed.startsWith("func ")
-                    || trimmed.startsWith("return ")
-                    || trimmed.startsWith("var ")
-                    || trimmed.startsWith("if ")
-                    || trimmed.startsWith("for ")
-                    || trimmed.startsWith("switch ")
-                    || trimmed.startsWith("struct ")
-                    || trimmed.contains(":=")
-                    || trimmed.contains(" = ")
-                    || trimmed.startsWith("break")
-                    || trimmed.startsWith("continue")
-                    || trimmed.startsWith("}")) {
-                sb.append(linea).append("\n");
-                continue;
-            }
-            java.util.regex.Matcher m = patronLlamada.matcher(linea);
-            if (m.matches()) {
-                // Es una llamada de función como sentencia: convertir a "_ := nombre(args)"
-                String indent = m.group(1);
-                String nombre = m.group(2);
-                String resto = m.group(3).trim();
-                // Asegurarse de que termina con ;
-                if (!resto.endsWith(";")) resto = resto + ";";
-                sb.append(indent).append("_ := ").append(nombre).append(resto).append("\n");
-            } else {
-                sb.append(linea).append("\n");
-            }
-        }
-        return sb.toString();
-    }
-
     private void run() {
         String contenido = editorPanel.getText();
         if (contenido.trim().isEmpty()) {
             cleanConsole();
             consoleTextArea.append("Campo Vacio \n");
             return;
-        }/*
+        }
+        lastEjecucion = new Ejecutor();
+        cleanConsole();
         try {
-            String codigoPreprocesado = preprocesar(editorPanel.getText());
-            lexer = new Lexer(new BufferedReader(new StringReader(codigoPreprocesado)));
-            parser = new Parser(lexer);
 
-            ASTNode ast = (ASTNode) parser.parse().value;
+            boolean sinErrores = lastEjecucion.ejecuar(contenido);
 
-            if (ast == null) {
-                cleanConsole();
-                consoleTextArea.append("No hay texto \n");
-                return;
+            if (!sinErrores){
+                consoleTextArea.append("Se encontraron erroes \n");
+                consoleTextArea.append("Revisar reporte de errores \n");
+                //for ()
+            } else {
+                consoleTextArea.append(lastEjecucion.getConsola());
+                //if (!lastEjecucion.)
             }
 
-            interpreter = new InterpreterVisitor();
-            interpreter.Visit(ast);
-
-            cleanConsole();
-            consoleTextArea.append(interpreter.output);
         } catch (Exception e) {
             consoleTextArea.append("Error: " + e.getMessage() + "\n");
-        }*/
+        }
         consoleTextArea.setCaretPosition(consoleTextArea.getDocument().getLength());
         editorPanel.getTextArea().requestFocus();
     }

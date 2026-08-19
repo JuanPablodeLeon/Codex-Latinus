@@ -188,7 +188,35 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
 
     @Override public Object visitLlamada_Actio(CodexLatinusGrammarParser.Llamada_ActioContext ctx) { return visitChildren(ctx); }
 
-    @Override public Object visitSi_Condicional(CodexLatinusGrammarParser.Si_CondicionalContext ctx) { return visitChildren(ctx); }
+    @Override public Object visitSi_Condicional(CodexLatinusGrammarParser.Si_CondicionalContext ctx) {
+        int cantExpr = ctx.expresion().size();
+        int totalBloqs = ctx.LLLAVE().size();
+
+        //Si el bloque Si es valido
+        if (isVerum(visit(ctx.expresion(0)))){
+            BloqueSI(ctx, 0);
+            return null;
+        }
+
+        //Si un bloque aliter con condicion es valido
+        int idExpr = 1;
+        for (int i = 1; i < totalBloqs; i++) {
+            boolean hayCondicion = idExpr < cantExpr && condicionBloque(ctx, i);
+            if (hayCondicion){
+                boolean valido = isVerum(visit(ctx.expresion(idExpr)));
+                idExpr++;
+                if (valido){
+                    BloqueSI(ctx, i);
+                    return null;
+                }
+            } else { //Ejecuta el ultimo aliter sin condicion
+                BloqueSI(ctx,i);
+                return null;
+            }
+        }
+
+        return null;
+    }
 
     @Override public Object visitDum_Ciclo(CodexLatinusGrammarParser.Dum_CicloContext ctx) { return visitChildren(ctx); }
 
@@ -449,5 +477,28 @@ public class InterpreterVisitor extends CodexLatinusGrammarBaseVisitor<Object> {
 
         if ((prev instanceof Character) && (actual instanceof Character)) return true;
         return false;
+    }
+
+    //Crea un nuevo entorno para ejecutar el bloque Si aceptado
+    private void BloqueSI(CodexLatinusGrammarParser.Si_CondicionalContext ctx, int indice){
+        int inicio = ctx.LLLAVE(indice).getSymbol().getStopIndex();
+        int fin = ctx.RLLAVE(indice).getSymbol().getStartIndex();
+        Enviroment parent = enviroment;
+        enviroment = new Enviroment(parent);
+        try {
+            for(CodexLatinusGrammarParser.InstruccionContext instr : ctx.instruccion()){
+                int pos = instr.getStart().getStartIndex();
+                if (pos > inicio && pos < fin) visit(instr);
+            }
+        }finally {
+            enviroment = parent;
+        }
+    }
+
+    //Ver si un aliter tiene condicional
+    private boolean condicionBloque(CodexLatinusGrammarParser.Si_CondicionalContext ctx, int indiceBloque){
+        if (indiceBloque >= ctx.LPAREN().size()) return false;
+
+        return ctx.LPAREN(indiceBloque).getSymbol().getStartIndex() < ctx.LLLAVE(indiceBloque).getSymbol().getStartIndex();
     }
 }

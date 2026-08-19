@@ -36,7 +36,7 @@ bloque_vars: ESTO ID DOS_PUNTOS tipos expresion PUNTO_COMA # Asignacion
            | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos_series LLLAVE expresion (COMA expresion)* RLLAVE PUNTO_COMA # Asignacion_Series
            // series <id> [<valor>] : <tipo>;
            | SERIES ID LCORCH expresion RCORCH DOS_PUNTOS tipos_series PUNTO_COMA # Asignacion_Series_Vacia
-          // esto <id> : <tipo> {...} finis ;
+          // structura <id> : <tipo> {...} finis ;
            | STRUCTURA ID LLLAVE (valores_structura_coma | valores_structura_punto_coma+) RLLAVE FINIS PUNTO_COMA # Asignacion_Structura
           // esto <id> : <id_structura> {...}
            | ESTO ID DOS_PUNTOS ID LLLAVE asignacion_structura RLLAVE # Asignacion_Strucutura_Variable
