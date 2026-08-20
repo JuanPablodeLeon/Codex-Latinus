@@ -5,7 +5,11 @@ import antlr4.com.CodexLatinusGrammarParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.Interpreter.Reports.ErrorLatinus;
 import org.example.Interpreter.InterpreterVisitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ejecutor {
     //lista de errores
@@ -14,6 +18,10 @@ public class Ejecutor {
     private ParseTree tree;
     private CommonTokenStream tokens;
     private CodexLatinusGrammarParser parser;
+    private final List<ErrorLatinus> errorLexico = new ArrayList<>();
+    private final List<ErrorLatinus> errorSintactico = new ArrayList<>();
+    private final List<ErrorLatinus> errorSemantico = new ArrayList<>();
+
 
     public boolean ejecuar(String codigo){
         //limpiar errores
