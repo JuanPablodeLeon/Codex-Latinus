@@ -19,4 +19,26 @@ public interface Visitor <T>{
     T visit(StructuraAccess.Context context);
     T visit(FuncArgsCall.Context context);
     T visit(RatioFuncArgsCall.Context context);
+    T visit(SiStm.Context context);
+    T visit(FuncsStm.Context context);
+    T visit(AutoOpStm.Context context);
+    T visit(PerStm.Context context);
+    T visit(FacereStm.Context context);
+    T visit(InterrumpeStm.Context context);
+    T visit(PergeStm.Context context);
+    T visit(DumStm.Context context);
+    T visit(ReddereStm.Context context);
+    T visit(LeerStm.Context context);
+    T visit(ImprStm.Context context);
+    T visit(Flujo.Context context);
+    T visit(SeriesAssigVal.Context context);
+    T visit(SeriesStrucAssigVal.Context context);
+    T visit(Asigancion.Context context);
+    T visit(CallActioStm.Context context);
+    T visit(ValDeclEsto.Context context);
+    T visit(SeriesDecl.Context context);
+    T visit(StructuraAsigField.Context context);
+    T visit(StructuraAsigSeriesVal.Context context);
+    T visit(StrucTypeDecl.Context context);
+    T visit(StrucVarDecl.Context context);
 }
