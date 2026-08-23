@@ -16,8 +16,8 @@ public class ErrorReporter {
         errores.add(new ErrorLatinus(ErrorLatinus.Tipo.SINTACTICO, line, column, message));
     }
 
-    public void semantico( int line, int column, String message){
-        errores.add(new ErrorLatinus(ErrorLatinus.Tipo.SEMANTICO, line, column, message));
+    public void semantico( int line, String message){
+        errores.add(new ErrorLatinus(ErrorLatinus.Tipo.SEMANTICO, line, message));
     }
 
     public boolean tieneErrores(){

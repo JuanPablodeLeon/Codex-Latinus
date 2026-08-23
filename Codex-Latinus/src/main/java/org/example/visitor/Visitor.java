@@ -14,4 +14,9 @@ public interface Visitor <T>{
     T visit(Parentesis.Context context);
     T visit(Identificador.Context context);
     T visit(AllExpr.Context context);
+    T visit(SeriesAccess.Context context);
+    T visit(SeriesFieldAccess.Context context);
+    T visit(StructuraAccess.Context context);
+    T visit(FuncArgsCall.Context context);
+    T visit(RatioFuncArgsCall.Context context);
 }
