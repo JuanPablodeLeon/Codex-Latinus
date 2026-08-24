@@ -1,6 +1,9 @@
 package org.example.Views;
 
+import antlr4.com.CodexLatinusGrammarLexer;
+import org.antlr.v4.runtime.Token;
 import org.example.Ejecutores.Ejecutor;
+import org.example.Interpreter.Reports.ErrorLatinus;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -65,13 +68,9 @@ public class CodexLatinusFrame  extends JFrame {
 
             boolean sinErrores = lastEjecucion.ejecuar(contenido);
 
+            consoleTextArea.append(lastEjecucion.getConsola());
             if (!sinErrores){
-                consoleTextArea.append("Se encontraron erroes \n");
-                consoleTextArea.append("Revisar reporte de errores \n");
-                //for ()
-            } else {
-                consoleTextArea.append(lastEjecucion.getConsola());
-                //if (!lastEjecucion.)
+                consoleTextArea.append("Revisar reporte de errores >\n");
             }
 
         } catch (Exception e) {
@@ -82,13 +81,13 @@ public class CodexLatinusFrame  extends JFrame {
     }
 
     private void errors() {
-       /* if (lexer == null || parser == null || interpreter == null) {
+        if (lastEjecucion == null) {
             JOptionPane.showMessageDialog(this,
                     "Primero ejecuta el código.",
                     "Aviso",
                     JOptionPane.WARNING_MESSAGE);
             return;
-        }*/
+        }
 
         // Crear el diálogo
         JDialog dialog = new JDialog(this, "Reporte de Errores", true);
@@ -110,37 +109,18 @@ public class CodexLatinusFrame  extends JFrame {
                 return false;
             }
         };
-/*
-        // Agregar errores léxicos
-        for (GoLiteError error : lexer.errors) {
+
+        // Errores
+        for (ErrorLatinus error : lastEjecucion.getErrores()) {
             modelo.addRow(new Object[]{
-                    error.getType(),
-                    error.getDescription(),
-                    error.getLine(),
-                    error.getColumn()
+                  tipoLegible(error.getTipo()),
+                  error.getMessage(),
+                  error.getLine(),
+                  error.getColumun() >= 0 ? error.getColumun() : "-"
             });
         }
 
-        // Agregar errores sintácticos
-        for (GoLiteError error : parser.errors) {
-            modelo.addRow(new Object[]{
-                    error.getType(),
-                    error.getDescription(),
-                    error.getLine(),
-                    error.getColumn()
-            });
-        }
 
-        // Agregar errores semánticos
-        for (GoLiteError error : interpreter.errors) {
-            modelo.addRow(new Object[]{
-                    error.getType(),
-                    error.getDescription(),
-                    error.getLine(),
-                    error.getColumn()
-            });
-        }
-*/
         JTable tabla = new JTable(modelo);
         tabla.setFillsViewportHeight(true);
         tabla.setRowHeight(25);
@@ -219,10 +199,76 @@ public class CodexLatinusFrame  extends JFrame {
         return false;
     }
 
-    private void showTokens(){}
+    private void showTokens(){
+        if (lastEjecucion == null || lastEjecucion.getTokens().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Primero ejecuta un programa para generar los tokens.",
+                    "Reporte de tokens",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    private void mostrarArbolAST(){}
+        JDialog dialog = new JDialog(this, "Reporte de Tokens", true);
+        dialog.setSize(800, 500);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
 
+        String[] columnas = {"#", "Tipo", "Texto", "Línea", "Columna"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
+        int indice = 0;
+        for (Token tok : lastEjecucion.getTokens()) {
+            if (tok.getType() == Token.EOF) {
+                continue;
+            }
+            String tipo = CodexLatinusGrammarLexer.VOCABULARY.getSymbolicName(tok.getType());
+            modelo.addRow(new Object[]{
+                    indice++,
+                    tipo != null ? tipo : String.valueOf(tok.getType()),
+                    tok.getText(),
+                    tok.getLine(),
+                    tok.getCharPositionInLine()
+            });
+        }
+
+        JTable tabla = new JTable(modelo);
+        tabla.setFillsViewportHeight(true);
+        tabla.setRowHeight(22);
+        dialog.add(new JScrollPane(tabla), BorderLayout.CENTER);
+
+        JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelSur.add(new JLabel("Total de tokens: " + modelo.getRowCount()));
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dialog.dispose());
+        panelSur.add(btnCerrar);
+        dialog.add(panelSur, BorderLayout.SOUTH);
+
+        dialog.setVisible(true);
+    }
+
+    private void mostrarArbolAST(){
+        if (lastEjecucion == null || lastEjecucion.getAst() == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Primero ejecuta un programa sin errores léxicos, sintácticos ni semánticos.",
+                    "Árbol AST",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+    }
+
+    private static String tipoLegible(ErrorLatinus.Tipo tipo) {
+        switch (tipo) {
+            case LEXICO:     return "Lexico";
+            case SINTACTICO: return "Sintactico";
+            case SEMANTICO:  return "Semantico";
+            default:         return tipo.toString();
+        }
+    }
 }
 

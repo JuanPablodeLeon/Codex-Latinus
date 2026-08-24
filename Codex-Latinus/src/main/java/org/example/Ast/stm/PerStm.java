@@ -7,17 +7,17 @@ import org.example.visitor.Visitor;
 import java.util.List;
 
 public class PerStm extends AbstractNode {
-    private final String nameParam;
-    private final String typeParam;
+    private final String nameIter;
+    private final String typeIter;
     private final ASTNode initValue;
     private final ASTNode condition;
     private final AutoOpStm incrm;
     private final List<ASTNode> body;
 
-    public PerStm( String nameParam, String typeParam, ASTNode initValue, ASTNode condition, AutoOpStm incrm, List<ASTNode> body, int line) {
+    public PerStm(String nameIter, String typeIter, ASTNode initValue, ASTNode condition, AutoOpStm incrm, List<ASTNode> body, int line) {
         super(line);
-        this.nameParam = nameParam;
-        this.typeParam = typeParam;
+        this.nameIter = nameIter;
+        this.typeIter = typeIter;
         this.initValue = initValue;
         this.condition = condition;
         this.incrm = incrm;
@@ -35,8 +35,8 @@ public class PerStm extends AbstractNode {
         public final int line;
 
         public Context(PerStm node) {
-            this.nameParam = node.nameParam;
-            this.typeParam = node.typeParam;
+            this.nameParam = node.nameIter;
+            this.typeParam = node.typeIter;
             this.initValue = node.initValue;
             this.condition = node.condition;
             this.incrm = node.incrm;

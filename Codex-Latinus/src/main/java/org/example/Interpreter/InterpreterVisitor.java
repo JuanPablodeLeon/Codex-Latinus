@@ -115,7 +115,7 @@ public class InterpreterVisitor implements Visitor<Object> {
     public Object visit(AllExpr.Context context) {
         Object left = context.left.accept(this);
         Object right = context.right.accept(this);
-        return opsNum(left,context.op, right);
+        return evaluateAllExpr(left,context.op, right);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class InterpreterVisitor implements Visitor<Object> {
             } catch (BreakException b){
                 break;
             } catch (ContinueException c){
-
+            //
             }
             context.incrm.accept(this);
         }
@@ -211,12 +211,12 @@ public class InterpreterVisitor implements Visitor<Object> {
 
     @Override
     public Object visit(InterrumpeStm.Context context) {
-        throw new ContinueException();
+        throw new BreakException();
     }
 
     @Override
     public Object visit(PergeStm.Context context) {
-        throw new BreakException();
+        throw new ContinueException();
     }
 
     @Override
