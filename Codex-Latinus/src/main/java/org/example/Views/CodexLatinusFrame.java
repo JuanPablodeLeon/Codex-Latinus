@@ -47,7 +47,14 @@ public class CodexLatinusFrame  extends JFrame {
         menuBar.onExit(e -> System.exit(0));
         menuBar.onTokens(e -> showTokens());
         menuBar.onErrors(e -> errors());
-        menuBar.onASTTree(e -> mostrarArbolAST());
+        menuBar.onASTTree(e -> {
+            String codigo = editorPanel.getText();
+            if (codigo.trim().isEmpty()){
+                JOptionPane.showMessageDialog(this, "Ingrese codigo primero");
+                return;
+            }
+            lastEjecucion.mostrarArbolParse(codigo);
+        });
         menuBar.onAbout(e -> JOptionPane.showMessageDialog(
                 this,
                 "Codex Latinus\nVersión 1.0.0\nOLC2",
@@ -259,6 +266,7 @@ public class CodexLatinusFrame  extends JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+
 
     }
 

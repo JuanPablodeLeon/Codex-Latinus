@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.gui.Trees;
 import org.example.Ast.ASTNode;
 import org.example.Ast.stm.Flujo;
 import org.example.Interpreter.Reports.ErrorColector;
@@ -28,6 +28,9 @@ public class Ejecutor {
     private ErrorReporter reporter = new ErrorReporter();
     private final List<Token> tokens = new ArrayList<>();
     private Flujo raiz;
+
+    private CodexLatinusGrammarParser.InicioContext parseTree;
+    private String[] ruleNames;
 
     public boolean ejecuar(String codigo) {
         salida.setLength(0);
@@ -110,6 +113,20 @@ public class Ejecutor {
 
     public List<ErrorLatinus> getErrores() {
         return reporter.getErrores();
+    }
+
+    public void mostrarArbolParse(String codigo) {
+        // Crear lexer y parser
+        CharStream entrada = CharStreams.fromString(codigo);
+        CodexLatinusGrammarLexer lexer = new CodexLatinusGrammarLexer(entrada);
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        CodexLatinusGrammarParser parser = new CodexLatinusGrammarParser(tokenStream);
+
+        // Parsear la regla inicial
+        CodexLatinusGrammarParser.InicioContext ctx = parser.inicio();
+
+        // Mostrar el árbol gráficamente (método estático de Trees)
+        Trees.inspect(ctx, List.of(parser.getRuleNames()));
     }
 }
 
