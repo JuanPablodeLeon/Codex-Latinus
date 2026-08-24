@@ -6,9 +6,9 @@ public class VarSymbol extends Symbol{
     public final boolean isIterationPer;
     public Integer sizeSeries;
 
-    public VarSymbol(String name, int lineDelcaration, Tipos type, boolean isIterationPer) {
+    public VarSymbol(String name, int lineDelcaration, Tipos type) {
         super(name, lineDelcaration);
         this.type = type;
-        this.isIterationPer = isIterationPer;
+        this.isIterationPer = false;
     }
 }

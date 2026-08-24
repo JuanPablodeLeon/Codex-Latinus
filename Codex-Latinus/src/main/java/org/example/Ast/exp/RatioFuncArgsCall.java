@@ -23,11 +23,13 @@ public class RatioFuncArgsCall extends AbstractNode {
         public final String type;
         public final String name;
         public final List<ASTNode> args;
+        public final int line;
 
         public Context(RatioFuncArgsCall node) {
             this.type = node.type;
             this.name = node.name;
             this.args = node.args;
+            this.line = node.line;
         }
     }
 

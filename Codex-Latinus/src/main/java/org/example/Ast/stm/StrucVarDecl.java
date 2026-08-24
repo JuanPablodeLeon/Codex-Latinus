@@ -21,11 +21,13 @@ public class StrucVarDecl extends AbstractNode {
         public final String name;
         public final String type;
         public final List<StrucFieldInit> values;
+        public final int line;
 
         public Context(StrucVarDecl node) {
             this.name = node.name;
             this.type = node.type;
             this.values = node.values;
+            this.line = node.line;
         }
     }
 

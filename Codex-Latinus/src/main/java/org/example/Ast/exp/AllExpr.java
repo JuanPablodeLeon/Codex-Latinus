@@ -21,11 +21,13 @@ public class AllExpr extends AbstractNode {
         public final ASTNode left;
         public final String op;
         public final ASTNode right;
+        public final int line;
 
         public Context(AllExpr node) {
             this.left = node.left;
             this.op = node.op;
             this.right = node.right;
+            this.line = node.line;
         }
     }
 

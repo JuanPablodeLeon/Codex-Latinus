@@ -23,12 +23,14 @@ public class ValDeclEsto extends AbstractNode {
         public final String type;
         public final ASTNode initValue;
         public final boolean typeInf;
+        public final int line;
 
         public Context(ValDeclEsto node) {
             this.name = node.name;
             this.type = node.type;
             this.initValue = node.initValue;
             this.typeInf = node.typeInf;
+            this.line = node.line;
         }
     }
 

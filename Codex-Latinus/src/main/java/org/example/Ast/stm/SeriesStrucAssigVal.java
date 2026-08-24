@@ -23,12 +23,14 @@ public class SeriesStrucAssigVal extends AbstractNode {
         public final ASTNode index;
         public final String nameStruc;
         public final ASTNode value;
+        public final int line;
 
         public Context(SeriesStrucAssigVal node) {
             this.nameSeries = node.nameSeries;
             this.index = node.index;
             this.nameStruc = node.nameStruc;
             this.value = node.value;
+            this.line = node.line;
         }
     }
 

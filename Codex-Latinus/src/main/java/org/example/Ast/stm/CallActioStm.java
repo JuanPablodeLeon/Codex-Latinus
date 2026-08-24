@@ -19,10 +19,12 @@ public class CallActioStm extends AbstractNode {
     public static class Context{
         public final String name;
         public final List<ASTNode> args;
+        public final int line;
 
         public Context(CallActioStm node) {
             this.name = node.name;
             this.args = node.args;
+            this.line = node.line;
         }
     }
 

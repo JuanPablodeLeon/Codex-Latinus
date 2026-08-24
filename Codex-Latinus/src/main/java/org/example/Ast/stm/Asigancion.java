@@ -17,10 +17,12 @@ public class Asigancion extends AbstractNode {
     public static class Context{
         public final String name;
         public final ASTNode value;
+        public final int line;
 
         public Context(Asigancion node) {
             this.name = node.name;
             this.value = node.value;
+            this.line = node.line;
         }
     }
 

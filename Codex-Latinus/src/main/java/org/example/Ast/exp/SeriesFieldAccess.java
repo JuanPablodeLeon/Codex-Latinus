@@ -20,11 +20,13 @@ public class SeriesFieldAccess extends AbstractNode {
         public final String nameSeries;
         public final ASTNode index;
         public final String nameField;
+        public final int line;
 
         public Context(SeriesFieldAccess node) {
             this.nameSeries = node.nameSeries;
             this.index = node.index;
             this.nameField = node.nameField;
+            this.line = node.line;
         }
     }
 

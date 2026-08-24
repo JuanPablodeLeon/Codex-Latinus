@@ -20,11 +20,13 @@ public class SeriesAssigVal extends AbstractNode {
         public final String name;
         public final ASTNode index;
         public final ASTNode value;
+        public final int line;
 
         public Context(SeriesAssigVal node) {
             this.name = node.name;
             this.index = node.index;
             this.value = node.value;
+            this.line = node.line;
         }
     }
 

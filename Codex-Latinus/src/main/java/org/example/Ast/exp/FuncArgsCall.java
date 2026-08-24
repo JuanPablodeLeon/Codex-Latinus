@@ -19,10 +19,12 @@ public class FuncArgsCall extends AbstractNode {
     public static class Context{
         public final String name;
         public final List<ASTNode> args;
+        public final int line;
 
         public Context(FuncArgsCall node) {
             this.name = node.name;
             this.args = node.args;
+            this.line = node.line;
         }
     }
 

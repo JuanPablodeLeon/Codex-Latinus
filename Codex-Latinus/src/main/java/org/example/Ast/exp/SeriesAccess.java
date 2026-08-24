@@ -6,21 +6,23 @@ import org.example.visitor.Visitor;
 
 public class SeriesAccess extends AbstractNode {
     private final String name;
-    private final ASTNode value;
+    private final ASTNode index;
 
-    public SeriesAccess(String name, ASTNode value, int line) {
+    public SeriesAccess(String name, ASTNode index, int line) {
         super(line);
         this.name = name;
-        this.value = value;
+        this.index = index;
     }
 
     public static class Context{
         public final String name;
-        public final ASTNode value;
+        public final ASTNode index;
+        public final int line;
 
         public Context(SeriesAccess node) {
             this.name = node.name;
-            this.value = node.value;
+            this.index = node.index;
+            this.line = node.line;
         }
     }
 

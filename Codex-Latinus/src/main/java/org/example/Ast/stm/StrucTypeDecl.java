@@ -19,10 +19,12 @@ public class StrucTypeDecl extends AbstractNode {
     public static class Context{
         public final String name;
         public final List<StrucFieldParams> fields;
+        public final int line;
 
         public Context(StrucTypeDecl node) {
             this.name = node.name;
             this.fields = node.fields;
+            this.line = node.line;
         }
     }
 

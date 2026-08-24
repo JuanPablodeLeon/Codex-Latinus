@@ -20,11 +20,13 @@ public class StructuraAsigField extends AbstractNode {
         public final String nameStruc;
         public final ASTNode field;
         public final ASTNode value;
+        public final int line;
 
         public Context(StructuraAsigField node) {
             this.nameStruc = node.nameStruc;
             this.field = node.field;
             this.value = node.value;
+            this.line = node.line;
         }
     }
 

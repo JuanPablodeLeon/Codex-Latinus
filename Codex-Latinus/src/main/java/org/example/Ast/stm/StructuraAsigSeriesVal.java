@@ -25,12 +25,14 @@ public class StructuraAsigSeriesVal extends AbstractNode {
         public final String nameSeries;
         public final ASTNode index;
         public final List<StrucFieldInit> values;
+        public final int line;
 
         public Context(StructuraAsigSeriesVal node) {
             this.nameStruc = node.nameStruc;
             this.nameSeries = node.nameSeries;
             this.index = node.index;
             this.values = node.values;
+            this.line = node.line;
         }
     }
 

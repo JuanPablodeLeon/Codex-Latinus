@@ -16,10 +16,12 @@ public class StructuraAccess extends AbstractNode {
     public static class Context{
         public final String nameStruc;
         public final String nameField;
+        public final int line;
 
         public Context(StructuraAccess node) {
             this.nameStruc = node.nameStruc;
             this.nameField = node.nameField;
+            this.line = node.line;
         }
     }
 
